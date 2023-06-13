@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href={{url_for('static',filename='dropdown.css')}}>
+
+<form action="/confirm" method="post">
+<div class="box">
+  <h2>Select Collaborative Company for Project ID: <span id="projid">{{data[0]}}</span></h2>
+    <select id="selected" name="collabid">
+      {% for i in data[1] %}
+      <option>{{i}}</option>
+      {% endfor %}
+    </select>
+    <input type="hidden" name="projid" value="{{data[0]}}">
+    <input type="hidden" name="origid" value="" id="orgi">
+    <button id="conf" class="button-3" type="submit">Confirm</button>
+  </div>
+</form>
+
+<script>
+  $(document).ready(function(){
+
+    $("#clblist").remove()
+    $("#collhead").remove()
+    var origid=document.getElementById("cid").innerHTML
+    console.log(origid)
+    document.getElementById("orgi").value=origid
+  })
+</script>
+
+<div id="op">
+
+</div>

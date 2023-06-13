@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href={{url_for('static',filename='grid.css')}}>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<div class="grid">
+  <h2 id="temp">Employees in Project ID: <span id="pid">{{data[0]}}</span></h2>
+
+    <article>
+{% for i in data[1] %}
+      <section>
+        <p>
+          <b>Name: </b>{{i[0]}}
+        </p>
+        <p>
+          <b>Project ID: </b>{{i[2]}}
+        </p>
+        <p>
+          <b>Designation: </b>{{i[3]}}
+        </p>
+        <p>
+          <b>Experience: </b>{{i[4]}}
+        </p>
+        <p>
+            <b>Owner Companyid: </b>{{i[5]}}
+        </p>
+      </section>
+{% endfor %}
+
+    </article>
+
+    <button id="addemp" class="button-3" role="button">Add Employees</button>
+
+</div>
+
+
+<script>
+    $("document").ready(function(){
+    $("#addemp").on("click",function(){
+
+        $("#collhead").remove()
+        var pid=document.getElementById("pid").innerHTML
+        var cid=document.getElementById("cid").innerHTML
+        $("#welc").remove()
+        
+        k={pid,cid}
+        k=JSON.stringify(k)
+        $.ajax({
+            url:"/addcollabemployee",
+            method:"POST",
+            contentType:"application/JSON",
+            data:k,
+            success:function(res){
+                $("#clblist").html(res)
+            }
+        })
+    })
+})
+</script>
+
+
+

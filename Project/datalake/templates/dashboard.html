@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<link type="text/css" rel="stylesheet" href={{url_for('static',filename='style.css')}}>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+
+<form action="/logout" method="POST" id="lg">
+  <button id="home" class="button-3" type="submit" style="margin-top: 1%;background-color: crimson;">Log Out</button>
+</form>
+<h1 id="welc">Welcome <span id="cid">{{data[0][3]}} </span></h1>
+<div id="X">
+    <h1>Project List </h1>
+    {% for i in data %}
+    <ul class="SG">
+      <li class="s18">
+        <div class="box">
+          <h3>Project ID: {{ i[0] }}</h3>
+          <h3>{{ i[2] }}</h3>
+          <ul class="df">
+            <li>{{ i[1] }}</li>
+            <button id="{{ i[0] }}" class="button-3" role="button">Show Employees</button>
+          </ul>
+        </div>
+      </li>
+    </ul>
+    {% endfor %}
+    <button id="addproj" class="button-3" role="button" style="background-color: cornflowerblue;">Add Project</button>
+
+  </div>
+  <div id="clb"></div>
+
+  <script>
+    $(document).ready(function(){
+      document.getElementById("X").addEventListener("click", function(event) {
+        if (event.target.tagName.toLowerCase() === "button") {
+          var buttonId = event.target.id;
+          if(buttonId!="coll" && buttonId!="conf" && buttonId!="addemp" && buttonId!="addempl" && buttonId!="addproj" && buttonId!="adp")
+          {     
+              $.ajax({
+                  url:"/employee",
+                  method:"POST",
+                  contentType:"application/json",
+                  data:buttonId,
+                  success:function(res){
+                    $("#X").html(res)
+                  }
+                })
+          }
+        }
+        });
+
+        comp=document.getElementById("cid").innerHTML
+        t={comp}
+        t=JSON.stringify(t)
+        $.ajax({
+            url:"/fetchcollab",
+            method:"POST",
+            contentType:"application/JSON",
+            data:t,
+            success:function(rs){
+              $("#clb").html(rs)
+            }
+        })
+
+        $("#addproj").on("click",function(){
+           var cid=document.getElementById("cid").innerHTML
+           k={cid}
+           k=JSON.stringify(k)
+           $.ajax({
+              url:"/projform",
+              method:"POST",
+              contentType:"application/JSON",
+              data:k,
+              success:function(res){
+                $("#X").html(res)
+              }
+           })
+        })
+    })
+  </script>
+
+
+

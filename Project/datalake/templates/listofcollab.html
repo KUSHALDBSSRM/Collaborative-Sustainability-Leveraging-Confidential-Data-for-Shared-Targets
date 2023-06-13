@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<link type="text/css" rel="stylesheet" href={{url_for('static',filename='style.css')}}>
+<h1 id="collhead">List of Projects you are assigned to collaborate</h1>
+<div id="clblist">
+    {% for i in data %}
+    <ul class="SG">
+      <li class="s18">
+        <div class="box">
+          <p><b>Project:</b> <span>{{ i[3] }}</span> (<span id="collprojid">{{ i[0] }}</span>)</p>
+          <p><b>Company: </b>{{ i[2] }} (<span id="owncompid">{{ i[1] }}</span>)</p>
+          
+          <ul class="df">
+            <li>{{ i[4] }}</li>
+            <button id="{{ i[0] }}" class="button-3" role="button">Show Employees</button>
+          </ul>
+        </div>
+      </li>
+    </ul>
+    {% endfor %}
+</div>
+
+<script>
+  $(document).ready(function(){
+    document.getElementById("clblist").addEventListener("click", function(event){
+      if (event.target.tagName.toLowerCase() === "button") {
+          var buttonID = event.target.id;
+          if(buttonID!="addemp" && buttonID!="addempl")
+          {
+                  var pid=document.getElementById("collprojid").innerHTML
+                  var k ={pid}
+                  k=JSON.stringify(k)
+                  $.ajax({
+                    url:"/collabemployeelist",
+                    method:"POST",
+                    contentType:"application/JSON",
+                    data:k,
+                    success:function(res){
+                      $("#clblist").html(res)
+                    }
+                  })
+          }
+      }
+    })
+  })
+</script>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href={{url_for('static',filename='grid.css')}}>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<div class="grid">
+  <h2 id="temp">Employees in Project ID: <span id="pid">{{data[0]}}</span></h2>
+{% for i in data[1] %}
+    <article>
+      <section>
+        <p>
+          <b>Name: </b>{{i[0]}}
+        </p>
+        <p>
+          <b>Project ID: </b>{{i[2]}}
+        </p>
+        <p>
+          <b>Designation: </b>{{i[3]}}
+        </p>
+        <p>
+          <b>Experience: </b>{{i[4]}}
+        </p>
+      </section>
+    </article>
+{% endfor %}
+<button id="addempl" class="button-3" role="button">Add Employees</button>
+
+</div>
+
+
+
+<div id="opti">
+<button id="coll" class="button-27" role="button">Add Collaborative Company to this project</button>
+</div>
+
+
+
+<script>
+  $(document).ready(function(){
+    $("#addempl").on("click",function(){
+      var pid = document.getElementById("pid").innerHTML
+      var cid = document.getElementById("cid").innerHTML
+      //$("#collhead").remove()
+      $("#welc").remove()
+      $("#clblist").remove()
+      $("#collhead").remove()
+      k={pid,cid}
+      k=JSON.stringify(k)
+      $.ajax({
+        url:"/addempl",
+        method:"POST",
+        contentType:"application/json",
+        data:k,
+        success:function(res){
+          $("#X").html(res)
+        }
+      })
+    })
+    $("#coll").on("click",function(){
+        var pid = document.getElementById("pid").innerHTML
+        var cid = document.getElementById("cid").innerHTML
+        document.getElementById("temp").innerHTML=""
+        l={pid,cid}
+        l=JSON.stringify(l)
+        $.ajax({
+          url:"/collaborate",
+          method:"POST",
+          contentType:"application/JSON",
+          data:l,
+          success:function(res){
+            $("#X").html(res)
+          }
+        })
+    })
+
+  })
+</script>
+
+
+
